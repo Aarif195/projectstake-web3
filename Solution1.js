@@ -1,6 +1,4 @@
-// This file contains my code solutions for the assessments.
 
-// Demonstrating Number values and operators
 // The variable 'a' is bound to the number value 10.
 let a = 10; 
 
