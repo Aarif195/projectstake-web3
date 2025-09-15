@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiet Times</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animated-box {
+            width: 50px;
+            height: 50px;
+            background-color: rgb(79, 70, 229);
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white flex flex-col items-center justify-center min-h-screen p-4">
+
+    <main class="w-full max-w-lg bg-slate-800 p-8 rounded-xl shadow-lg relative h-64 overflow-hidden">
+        <h1 class="text-xl font-bold text-center mb-6">Quiet Times Demo</h1>
+        <div id="movingBox" class="animated-box"></div>
+    </main>
+
+    <div class="mt-8 flex space-x-4">
+        <button id="startButton" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors">Start</button>
+        <button id="stopButton" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-colors">Stop</button>
+    </div>
+
+    <script>
+        // Get the moving box and the buttons
+        const movingBox = document.getElementById("movingBox");
+        const startButton = document.getElementById("startButton");
+        const stopButton = document.getElementById("stopButton");
+
+        let animationFrameId = null;
+        let position = 0;
+        let direction = 1;
+
+        // The main animation loop.
+        // This function is called by the browser to update the animation.
+        function animate() {
+            const containerWidth = document.querySelector("main").clientWidth;
+            const boxWidth = movingBox.offsetWidth;
+
+            // Check if the box has hit the right or left edge.
+            // If so, reverse its direction.
+            if (position + boxWidth > containerWidth || position < 0) {
+                direction *= -1;
+            }
+
+            // Update the position based on the direction.
+            position += direction * 2;
+            movingBox.style.left = `${position}px`;
+
+            // Request the next animation frame.
+            animationFrameId = requestAnimationFrame(animate);
+        }
+
+        // Event listener for the start button.
+        // It starts the animation loop if it's not already running.
+        startButton.addEventListener("click", () => {
+            if (animationFrameId === null) {
+                animate();
+            }
+        });
+
+        // Event listener for the stop button.
+        // It stops the animation loop.
+        stopButton.addEventListener("click", () => {
+            if (animationFrameId !== null) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+        });
+    </script>
+</body>
+</html>
